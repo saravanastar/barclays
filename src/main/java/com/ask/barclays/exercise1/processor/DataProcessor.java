@@ -17,8 +17,8 @@ public class DataProcessor {
      * @param gateMap
      */
     public void processBags(Scanner userInput, Map<String, Gate> gateMap) {
-        System.out.println("Enter the Baggage id , Gate and flight delimeter by space");
-        System.out.println("Do you want to exit, press y");
+        System.out.println("Enter the input values : Baggage_Id (space) Gate (space) Flight");
+        System.out.println("If you want to exit, press y");
         try {
             String input = userInput.nextLine();
             while (input != null && !input.equalsIgnoreCase("y")) {
@@ -39,7 +39,6 @@ public class DataProcessor {
                             System.out.println();
                         }
                         cleanDataVisitedNodes(gateMap);
-
                     }
                 } else {
                     System.out.println("Invalid input");
@@ -84,18 +83,24 @@ public class DataProcessor {
         }
         gate.setVisited(Boolean.TRUE);
         map.put(gate.getName(), gate);
-        Optional<Flight> rightGate = gate.getFlights().stream().filter(gateFlightCheck -> gateFlightCheck.getId().equalsIgnoreCase(destination)).findFirst();
-        if (rightGate.isPresent() || destination.equalsIgnoreCase(source)) {
+
+        /**
+         *  Checking whether its a destination gate.
+         */
+        Optional<Flight> destGate = gate.getFlights().stream().filter(gateFlightCheck -> gateFlightCheck.getId().equalsIgnoreCase(destination)).findFirst();
+        if (destGate.isPresent() || destination.equalsIgnoreCase(source)) {
             List<Gate> foundGate = new ArrayList<>();
             gate.setCostFromOrigin(weight);
             foundGate.add(gate);
             return foundGate;
         }
+
         /**
          * Get the connected Vertices(Gates), if its not already visited.
          */
         List<Gate> possibleGates = gate.getConnectedGates().stream().filter(connectedGate -> !map.get(connectedGate.getName()).isVisited()).collect(Collectors.toList());
         if (possibleGates != null && possibleGates.size() > 0) {
+
             /**
              * Recursive call with all the possible connected nodes and collecting the result in List<List<Gate>>.
              */
@@ -107,6 +112,7 @@ public class DataProcessor {
                 }
                 return tmpList;
             }).collect(Collectors.toList());
+
             /**
              * filtering and finding the shortest path.
              */

@@ -21,8 +21,8 @@ public class DataReceiver {
      */
     public void buildFlightDetails(Scanner userInput, Map<String, Gate> gateMap) throws Exception {
 
-        System.out.println("Enter the Flight, Gate, destination  and corresponding time delimiter by space");
-        System.out.println("Do you want to exit, press y");
+        System.out.println("Enter the input values : Flight (space) Gate (space) destination (space) time ");
+        System.out.println("If you want to exit, press y");
         try {
             if (gateMap != null && gateMap.isEmpty()) {
                 throw new Exception("Conveyor System is not prepard properly");
@@ -42,6 +42,8 @@ public class DataReceiver {
                         });
                         return value;
                     });
+                } else {
+                    System.out.println("Its not a valid input, enter it again or y to exit");
                 }
                 input = userInput.nextLine();
             }
@@ -59,8 +61,8 @@ public class DataReceiver {
      * @return
      */
     public Map<String,Gate> buildConveyorGateInput(Scanner userInput) throws Exception {
-        System.out.println("Enter the Gate1, Gate 2  and corresponding weight delimiter by space");
-        System.out.println("Do you want to exit, press y");
+        System.out.println("Enter the input values : Gate 1 (space) Gate 2 (space) weight ");
+        System.out.println("If you want to exit, press y");
         String input = userInput.nextLine();
         Map<String, Gate> availableGates = new HashMap<>();
         try {
@@ -91,7 +93,7 @@ public class DataReceiver {
                     Gate gate = availableGates.put(gateInfo[0], buildObject.apply(gateInfo[0], gateInfo[1]));
                     gate = availableGates.put(gateInfo[1], buildObject.apply(gateInfo[1], gateInfo[0]));
                 } else {
-                    System.out.println("Its a valid input, enter it again or y to exit");
+                    System.out.println("Its not a valid input, enter it again or y to exit");
                 }
                 input = userInput.nextLine();
             }
