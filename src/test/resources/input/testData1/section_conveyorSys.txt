@@ -1,0 +1,12 @@
+Concourse_A_Ticketing A5 5
+A5 BaggageClaim 5
+A5 A10 4
+A5 A1 6
+A1 A2 1
+A2 A3 1
+A3 A4 1
+A10 A9 1
+A9 A8 1
+A8 A7 1
+A7 A6 1
+y
