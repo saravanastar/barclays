@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class DataProcessor {
 
     /**
-     * Reads Bags and destination flight informtion and find the shortest path.
+     * Reads Bags and destination flight information and find the shortest path.
      * @param userInput
      * @param gateMap
      */
@@ -57,7 +57,7 @@ public class DataProcessor {
      * @param gateMap
      */
     private void cleanDataVisitedNodes(Map<String, Gate> gateMap) {
-        gateMap.entrySet().stream().forEach( map -> {
+        gateMap.entrySet().forEach( map -> {
             Gate gate = map.getValue();
             gate.setVisited(Boolean.FALSE);
             gateMap.put(map.getKey(), gate);
@@ -74,6 +74,10 @@ public class DataProcessor {
      * @return
      */
     public List<Gate> findShortestPath(Map<String, Gate> map, String baggageId, String source, String destination, int weight) {
+
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
         Gate gate = map.get(source);
         if (gate.isVisited()) {
             return null;
@@ -87,8 +91,14 @@ public class DataProcessor {
             foundGate.add(gate);
             return foundGate;
         }
+        /**
+         * Get the connected Vertices(Gates), if its not already visited.
+         */
         List<Gate> possibleGates = gate.getConnectedGates().stream().filter(connectedGate -> !map.get(connectedGate.getName()).isVisited()).collect(Collectors.toList());
         if (possibleGates != null && possibleGates.size() > 0) {
+            /**
+             * Recursive call with all the possible connected nodes and collecting the result in List<List<Gate>>.
+             */
             List<List<Gate>> gateTotal = possibleGates.stream().map(connectedGate -> {
                 List<Gate> tmpList = findShortestPath(map, baggageId, connectedGate.getName(), destination, connectedGate.getCostFromOrigin());
                 if (tmpList != null) {
@@ -97,6 +107,9 @@ public class DataProcessor {
                 }
                 return tmpList;
             }).collect(Collectors.toList());
+            /**
+             * filtering and finding the shortest path.
+             */
             return gateTotal.stream().filter(nullList -> nullList!=null && nullList.size() > 0).min(Comparator.comparingInt(elem -> elem.stream().mapToInt(gateVal -> gateVal.getCostFromOrigin()).sum())).orElse(null);
         } else {
             return null;

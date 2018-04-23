@@ -24,6 +24,9 @@ public class DataReceiver {
         System.out.println("Enter the Flight, Gate, destination  and corresponding time delimiter by space");
         System.out.println("Do you want to exit, press y");
         try {
+            if (gateMap != null && gateMap.isEmpty()) {
+                throw new Exception("Conveyor System is not prepard properly");
+            }
             String input = userInput.nextLine();
             while (input != null && !input.equalsIgnoreCase("y")) {
                 String[] flightInfo = input.split(" ");

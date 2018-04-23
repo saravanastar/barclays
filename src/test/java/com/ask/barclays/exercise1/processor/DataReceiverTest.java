@@ -4,10 +4,13 @@ import com.ask.barclays.exercise1.ExerciseOneTest;
 import com.ask.barclays.exercise1.po.Gate;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 import java.util.Map;
 import java.util.Scanner;
 
+@RunWith(JUnit4.class)
 public class DataReceiverTest extends ExerciseOneTest {
 
     DataReceiver dataReceiver = new DataReceiver();
